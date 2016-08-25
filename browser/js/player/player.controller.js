@@ -4,12 +4,12 @@
 juke.controller('PlayerCtrl', function ($scope, $rootScope) {
 
   // initialize audio player (note this kind of DOM stuff is odd for Angular)
-  var audio = document.createElement('audio');
-  audio.addEventListener('ended', function () {
-    $scope.next();
-    // $scope.$apply(); // triggers $rootScope.$digest, which hits other scopes
-    $scope.$evalAsync(); // likely best, schedules digest if none happening
-  });
+  // var audio = document.createElement('audio');
+  // audio.addEventListener('ended', function () {
+  //   $scope.next();
+  //   // $scope.$apply(); // triggers $rootScope.$digest, which hits other scopes
+  //   $scope.$evalAsync(); // likely best, schedules digest if none happening
+  // });
   audio.addEventListener('timeupdate', function () {
     $scope.progress = 100 * audio.currentTime / audio.duration;
     // $scope.$digest(); // re-computes current template only (this scope)

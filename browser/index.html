@@ -7,13 +7,23 @@
     <link href="/style.css" rel="stylesheet" />
     <script src="/angular/angular.js" defer></script>
     <script src="/js/module.js" defer></script>
+    <!-- ALBUM -->
     <script src="/js/album/album.controllers.js" defer></script>
+    <script src="/js/album/album.factory.js" defer></script>
+    <script src="/js/album/stats.factory.js" defer></script>
+    <!-- ALBUM -->
+    <script src="/js/albums/albums.controllers.js" defer></script>
+    <script src="/js/albums/albums.factory.js" defer></script>
+    <!-- PLAYER -->
     <script src="/js/player/player.controller.js" defer></script>
     <script src="/js/player/player.factory.js" defer></script>
+    
+
   </head>
   <body ng-app="juke">
     <div id="main" class="container-fluid">
 
+    <!-- /*-------------- SIDEBAR ----------------- */ -->
       <div class="col-xs-2">
         <sidebar>
           <img src="juke.svg" class="logo">
@@ -25,10 +35,13 @@
         </sidebar>
       </div>
 
-      <div class="col-xs-10">
-        <div class="album" ng-controller="AlbumCtrl">
+      
+
+      <div class="col-xs-10" >
+      <!-- /*---------------------- SINGLE ALBUM VIEW ---------------------- */ -->
+        <div class="album" ng-controller="AlbumCtrl" ng-show="true">
           <p>
-            <h3>{{ album.name }}</h3>
+            <h3>{{ album.name }}     {{ fullDuration }}</h3>
             <img ng-src="{{ album.imageUrl }}" class="img-thumbnail">
           </p>
           <table class='table'>
@@ -54,8 +67,29 @@
             </tbody>
           </table>
         </div>
+        <!-- /*-------------- MULTIPLE ALBUMS VIEW ----------------- */ -->
+        <div ng-show="false" ng-controller="AblumsController">
+          <h3>Albums</h3>
+          <div class="row">
+            <div class="col-xs-4" ng-repeat="album in albums">
+              <a class="thumbnail" href="#">
+                <img ng-src="{{album.imageUrl}}">
+                <div class="caption">
+                  <h5>
+                    <span>{{ album.name }}</span>
+                  </h5>
+                  <small>Number of Songs: {{ album.numOfSongs }}</small>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+
       </div>
 
+
+      <!-- /*-------------- PLAYER CONTROL BAR ----------------- */ -->
       <footer>
         <div ng-show="currentSong" ng-controller="PlayerCtrl">
           <div class="pull-left">

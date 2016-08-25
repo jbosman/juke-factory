@@ -1,15 +1,13 @@
 /* global juke */
 'use strict';
 
-juke.controller('AlbumCtrl', function ($scope, $http, $rootScope, $log) {
+juke.controller('AlbumCtrl', function ($scope, $http, $rootScope, $log, StatsFactory, AblumFactory, AlbumsFactory) {
 
   // load our initial data
-  $http.get('/api/albums/')
-  .then(function (res) { return res.data; })
+  AlbumsFactory.fetchAll()
   .then(function (albums) {
-    return $http.get('/api/albums/' + albums[0].id); // temp: get one
+    return AblumFactory.fetchOne(albums)
   })
-  .then(function (res) { return res.data; })
   .then(function (album) {
     album.imageUrl = '/api/albums/' + album.id + '/image';
     album.songs.forEach(function (song, i) {
@@ -17,6 +15,15 @@ juke.controller('AlbumCtrl', function ($scope, $http, $rootScope, $log) {
       song.albumIndex = i;
     });
     $scope.album = album;
+
+    StatsFactory.totalTime(album)
+      .then(function (albumDuration) {
+        var albumDurationMinutes = Math.floor(albumDuration/60);
+        var albumDurationSeconds = Math.floor(albumDuration % 60);
+        $scope.fullDuration = albumDurationMinutes + ":" + albumDurationSeconds;
+      });
+
+
   })
   .catch($log.error); // $log service can be turned on and off; also, pre-bound
 
